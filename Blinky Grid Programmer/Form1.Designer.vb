@@ -25,11 +25,18 @@ Partial Class Form1
         Me.components = New System.ComponentModel.Container()
         Me.tabMessageType = New System.Windows.Forms.TabControl()
         Me.tabPixel = New System.Windows.Forms.TabPage()
+        Me.Label2 = New System.Windows.Forms.Label()
+        Me.cmbPixelDelay = New System.Windows.Forms.ComboBox()
+        Me.radPixelAnimation = New System.Windows.Forms.RadioButton()
+        Me.radPixelMarquee = New System.Windows.Forms.RadioButton()
         Me.cmdClearFrame = New System.Windows.Forms.Button()
         Me.cmdAddFrame = New System.Windows.Forms.Button()
         Me.TabPage2 = New System.Windows.Forms.TabPage()
+        Me.txtMessage = New System.Windows.Forms.TextBox()
         Me.panExistingFrames = New System.Windows.Forms.Panel()
         Me.boxExistingFrames = New System.Windows.Forms.GroupBox()
+        Me.grpMessages = New System.Windows.Forms.GroupBox()
+        Me.FlowLayoutPanel1 = New System.Windows.Forms.FlowLayoutPanel()
         Me.GroupBox1 = New System.Windows.Forms.GroupBox()
         Me.picClock = New System.Windows.Forms.PictureBox()
         Me.GroupBox2 = New System.Windows.Forms.GroupBox()
@@ -41,7 +48,9 @@ Partial Class Form1
         Me.barProgress = New System.Windows.Forms.ProgressBar()
         Me.tabMessageType.SuspendLayout()
         Me.tabPixel.SuspendLayout()
+        Me.TabPage2.SuspendLayout()
         Me.boxExistingFrames.SuspendLayout()
+        Me.grpMessages.SuspendLayout()
         Me.GroupBox1.SuspendLayout()
         CType(Me.picClock, System.ComponentModel.ISupportInitialize).BeginInit()
         Me.GroupBox2.SuspendLayout()
@@ -62,6 +71,10 @@ Partial Class Form1
         '
         'tabPixel
         '
+        Me.tabPixel.Controls.Add(Me.Label2)
+        Me.tabPixel.Controls.Add(Me.cmbPixelDelay)
+        Me.tabPixel.Controls.Add(Me.radPixelAnimation)
+        Me.tabPixel.Controls.Add(Me.radPixelMarquee)
         Me.tabPixel.Controls.Add(Me.cmdClearFrame)
         Me.tabPixel.Controls.Add(Me.cmdAddFrame)
         Me.tabPixel.Location = New System.Drawing.Point(4, 25)
@@ -71,6 +84,50 @@ Partial Class Form1
         Me.tabPixel.TabIndex = 0
         Me.tabPixel.Text = "Pixel Message"
         Me.tabPixel.UseVisualStyleBackColor = True
+        '
+        'Label2
+        '
+        Me.Label2.AutoSize = True
+        Me.Label2.Location = New System.Drawing.Point(194, 125)
+        Me.Label2.Name = "Label2"
+        Me.Label2.Size = New System.Drawing.Size(44, 17)
+        Me.Label2.TabIndex = 5
+        Me.Label2.Text = "Delay"
+        '
+        'cmbPixelDelay
+        '
+        Me.cmbPixelDelay.AutoCompleteMode = System.Windows.Forms.AutoCompleteMode.Suggest
+        Me.cmbPixelDelay.AutoCompleteSource = System.Windows.Forms.AutoCompleteSource.ListItems
+        Me.cmbPixelDelay.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList
+        Me.cmbPixelDelay.FormattingEnabled = True
+        Me.cmbPixelDelay.Items.AddRange(New Object() {"0", "1", "2", "3", "4", "5", "6", "7", "8", "9", "10", "11", "12", "13", "14", "15"})
+        Me.cmbPixelDelay.Location = New System.Drawing.Point(247, 122)
+        Me.cmbPixelDelay.MaxDropDownItems = 16
+        Me.cmbPixelDelay.Name = "cmbPixelDelay"
+        Me.cmbPixelDelay.Size = New System.Drawing.Size(59, 24)
+        Me.cmbPixelDelay.TabIndex = 4
+        '
+        'radPixelAnimation
+        '
+        Me.radPixelAnimation.AutoSize = True
+        Me.radPixelAnimation.Checked = True
+        Me.radPixelAnimation.Location = New System.Drawing.Point(197, 95)
+        Me.radPixelAnimation.Name = "radPixelAnimation"
+        Me.radPixelAnimation.Size = New System.Drawing.Size(91, 21)
+        Me.radPixelAnimation.TabIndex = 3
+        Me.radPixelAnimation.TabStop = True
+        Me.radPixelAnimation.Text = "Animation"
+        Me.radPixelAnimation.UseVisualStyleBackColor = True
+        '
+        'radPixelMarquee
+        '
+        Me.radPixelMarquee.AutoSize = True
+        Me.radPixelMarquee.Location = New System.Drawing.Point(197, 67)
+        Me.radPixelMarquee.Name = "radPixelMarquee"
+        Me.radPixelMarquee.Size = New System.Drawing.Size(85, 21)
+        Me.radPixelMarquee.TabIndex = 2
+        Me.radPixelMarquee.Text = "Marquee"
+        Me.radPixelMarquee.UseVisualStyleBackColor = True
         '
         'cmdClearFrame
         '
@@ -92,6 +149,7 @@ Partial Class Form1
         '
         'TabPage2
         '
+        Me.TabPage2.Controls.Add(Me.txtMessage)
         Me.TabPage2.Location = New System.Drawing.Point(4, 25)
         Me.TabPage2.Name = "TabPage2"
         Me.TabPage2.Padding = New System.Windows.Forms.Padding(3)
@@ -99,6 +157,13 @@ Partial Class Form1
         Me.TabPage2.TabIndex = 1
         Me.TabPage2.Text = "Text Message"
         Me.TabPage2.UseVisualStyleBackColor = True
+        '
+        'txtMessage
+        '
+        Me.txtMessage.Location = New System.Drawing.Point(7, 7)
+        Me.txtMessage.Name = "txtMessage"
+        Me.txtMessage.Size = New System.Drawing.Size(299, 22)
+        Me.txtMessage.TabIndex = 0
         '
         'panExistingFrames
         '
@@ -117,13 +182,34 @@ Partial Class Form1
         Me.boxExistingFrames.Anchor = CType((((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Bottom) _
             Or System.Windows.Forms.AnchorStyles.Left) _
             Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
+        Me.boxExistingFrames.Controls.Add(Me.grpMessages)
         Me.boxExistingFrames.Controls.Add(Me.panExistingFrames)
         Me.boxExistingFrames.Location = New System.Drawing.Point(13, 220)
         Me.boxExistingFrames.Name = "boxExistingFrames"
-        Me.boxExistingFrames.Size = New System.Drawing.Size(687, 178)
+        Me.boxExistingFrames.Size = New System.Drawing.Size(687, 298)
         Me.boxExistingFrames.TabIndex = 2
         Me.boxExistingFrames.TabStop = False
         Me.boxExistingFrames.Text = "Existing Frames"
+        '
+        'grpMessages
+        '
+        Me.grpMessages.Anchor = CType(((System.Windows.Forms.AnchorStyles.Bottom Or System.Windows.Forms.AnchorStyles.Left) _
+            Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
+        Me.grpMessages.Controls.Add(Me.FlowLayoutPanel1)
+        Me.grpMessages.Location = New System.Drawing.Point(7, 179)
+        Me.grpMessages.Name = "grpMessages"
+        Me.grpMessages.Size = New System.Drawing.Size(674, 113)
+        Me.grpMessages.TabIndex = 1
+        Me.grpMessages.TabStop = False
+        Me.grpMessages.Text = "Messages To Transmit (0)"
+        '
+        'FlowLayoutPanel1
+        '
+        Me.FlowLayoutPanel1.BackColor = System.Drawing.SystemColors.ControlLightLight
+        Me.FlowLayoutPanel1.Location = New System.Drawing.Point(7, 22)
+        Me.FlowLayoutPanel1.Name = "FlowLayoutPanel1"
+        Me.FlowLayoutPanel1.Size = New System.Drawing.Size(661, 85)
+        Me.FlowLayoutPanel1.TabIndex = 0
         '
         'GroupBox1
         '
@@ -138,9 +224,10 @@ Partial Class Form1
         'picClock
         '
         Me.picClock.BackColor = System.Drawing.Color.Black
+        Me.picClock.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle
         Me.picClock.Location = New System.Drawing.Point(6, 22)
         Me.picClock.Name = "picClock"
-        Me.picClock.Size = New System.Drawing.Size(164, 118)
+        Me.picClock.Size = New System.Drawing.Size(170, 118)
         Me.picClock.TabIndex = 0
         Me.picClock.TabStop = False
         '
@@ -157,9 +244,9 @@ Partial Class Form1
         'picData
         '
         Me.picData.BackColor = System.Drawing.Color.Black
-        Me.picData.Location = New System.Drawing.Point(0, 22)
+        Me.picData.Location = New System.Drawing.Point(-7, 22)
         Me.picData.Name = "picData"
-        Me.picData.Size = New System.Drawing.Size(181, 118)
+        Me.picData.Size = New System.Drawing.Size(188, 118)
         Me.picData.TabIndex = 0
         Me.picData.TabStop = False
         '
@@ -169,6 +256,7 @@ Partial Class Form1
         '
         'cmdTransmit
         '
+        Me.cmdTransmit.Enabled = False
         Me.cmdTransmit.Location = New System.Drawing.Point(513, 9)
         Me.cmdTransmit.Name = "cmdTransmit"
         Me.cmdTransmit.Size = New System.Drawing.Size(181, 23)
@@ -206,7 +294,7 @@ Partial Class Form1
         '
         Me.AutoScaleDimensions = New System.Drawing.SizeF(8.0!, 16.0!)
         Me.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font
-        Me.ClientSize = New System.Drawing.Size(712, 411)
+        Me.ClientSize = New System.Drawing.Size(712, 531)
         Me.Controls.Add(Me.barProgress)
         Me.Controls.Add(Me.txtDelay)
         Me.Controls.Add(Me.Label1)
@@ -219,7 +307,11 @@ Partial Class Form1
         Me.Text = "Form1"
         Me.tabMessageType.ResumeLayout(False)
         Me.tabPixel.ResumeLayout(False)
+        Me.tabPixel.PerformLayout()
+        Me.TabPage2.ResumeLayout(False)
+        Me.TabPage2.PerformLayout()
         Me.boxExistingFrames.ResumeLayout(False)
+        Me.grpMessages.ResumeLayout(False)
         Me.GroupBox1.ResumeLayout(False)
         CType(Me.picClock, System.ComponentModel.ISupportInitialize).EndInit()
         Me.GroupBox2.ResumeLayout(False)
@@ -244,4 +336,11 @@ Partial Class Form1
     Friend WithEvents Label1 As Label
     Friend WithEvents txtDelay As TextBox
     Friend WithEvents barProgress As ProgressBar
+    Friend WithEvents cmbPixelDelay As ComboBox
+    Friend WithEvents radPixelAnimation As RadioButton
+    Friend WithEvents radPixelMarquee As RadioButton
+    Friend WithEvents txtMessage As TextBox
+    Friend WithEvents grpMessages As GroupBox
+    Friend WithEvents FlowLayoutPanel1 As FlowLayoutPanel
+    Friend WithEvents Label2 As Label
 End Class

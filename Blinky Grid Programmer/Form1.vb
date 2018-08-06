@@ -12,6 +12,7 @@ Public Class Form1
         'Test only.  Remove from working system
         ''MessageInBits = "000011100000000000000000000001100000000100011110000010110001000100001110000101010001010100011000001010010010000000011000000110110001010100001101110000110000000000000000000000000000000111111111"
         MessageInBits = "0001000000000000000000000000011000000001110001100011000100000000000000000000000000011000000000000000000000000000000000000000000000111100001001000011110000000000001111100001000000000000000100000000011000000000000000000111111001000010010000100100001001111110000000001111111110000001100000011000000110000001100000011111111100000000100101010001000000000000001000000000011001111110010000100100001001000010011111100000000000000000000000000011110000100100001111000000000000000000000000000000000000000000011011000000010000000000001100000000011000011000000000000000000000000000101011100000000000000000000000000000000111111111"
+        'MessageInBits = "0000010000000000000000000000011000000001000111100000000100010001110001010000000000000000000000000000000111111111"
         '**************************************
         For i As Integer = 0 To 55
             Dim B As New Button
@@ -28,7 +29,13 @@ Public Class Form1
             B.Tag = i
             AddHandler B.Click, AddressOf Button_Click
         Next
+
+        'Other setup items here
         tabMessageType.Height = lastTop + 26 + 16
+        cmbPixelDelay.SelectedIndex = 5
+
+
+
     End Sub
 
     Private Sub Button_Click(ByVal sender As Object, ByVal e As System.EventArgs)
@@ -47,7 +54,7 @@ Public Class Form1
         Dim length As Integer
         length = Len(MessageInBits)
         i = i + 1
-        If i < Len(MessageInBits) Then
+        If i <= Len(MessageInBits) Then
             Dim bitToTransmit As Integer
             bitToTransmit = Val(Mid(MessageInBits, i, 1))
             If bitToTransmit = 0 Then
@@ -56,6 +63,7 @@ Public Class Form1
                 picData.BackColor = clrWhite
             End If
             picData.Refresh()
+            Threading.Thread.Sleep(tmrTransmitData.Interval)
 
             'Transmit 1 Bit of the Information Here.
             If picClock.BackColor = clrBlack Then
@@ -65,10 +73,12 @@ Public Class Form1
             End If
             picClock.Refresh()
             barProgress.Value = barProgress.Value + 1
+            Threading.Thread.Sleep(tmrTransmitData.Interval)
 
         Else
-            Threading.Thread.Sleep(2000)
+            'Threading.Thread.Sleep(500)
             picClock.BackColor = clrBlack
+            'Threading.Thread.Sleep(tmrTransmitData.Interval)
             picData.BackColor = clrBlack
             tmrTransmitData.Enabled = False
 
@@ -101,7 +111,7 @@ Public Class Form1
 
     Private Sub cmdTransmit_Click(sender As Object, e As EventArgs) Handles cmdTransmit.Click
         'setup stuff
-        barProgress.Maximum = Len(MessageInBits)
+        barProgress.Maximum = Len(MessageInBits) + 1
         barProgress.Value = 1
         i = 0
         tmrTransmitData.Enabled = True
