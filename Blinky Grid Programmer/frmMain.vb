@@ -1,6 +1,6 @@
 ﻿Imports Microsoft.VisualBasic.Devices
 
-Public Class Form1
+Public Class frmMain
     'Basic Variables
     Dim IsCreated(99) As Boolean
     Dim Buttons As New Dictionary(Of String, Button)
@@ -22,8 +22,7 @@ Public Class Form1
 
 
 
-
-    Private Sub Form1_Load(sender As Object, e As EventArgs) Handles Me.Load
+    Private Sub frmMain_Load(sender As Object, e As EventArgs) Handles Me.Load
         Dim lastTop, i As Integer
         'Test only.  Remove from working system
         ''MessageInBits = "000011100000000000000000000001100000000100011110000010110001000100001110000101010001010100011000001010010010000000011000000110110001010100001101110000110000000000000000000000000000000111111111"
@@ -54,6 +53,7 @@ Public Class Form1
 
 
     End Sub
+
 
     Private Sub Button_Click(ByVal sender As Object, ByVal e As System.EventArgs)
         Dim B As Button = sender
@@ -104,10 +104,12 @@ Public Class Form1
     End Sub
 
     Private Sub txtDelay_TextChanged(sender As Object, e As EventArgs) Handles txtDelay.TextChanged
+
         If Not IsNumeric(txtDelay.Text) Then
+            Beep()
+            Threading.Thread.Sleep(50)
             txtDelay.Text = "50"
             tmrTransmitData.Interval = Val(txtDelay.Text)
-
         End If
 
 
@@ -148,6 +150,17 @@ Public Class Form1
 
         'Save Actual Frame Data for later transmission.
 
+    End Sub
+
+    Private Sub frmMain_HandleDestroyed(sender As Object, e As EventArgs) Handles Me.HandleDestroyed
+
+    End Sub
+
+    Private Sub txtDelay_KeyPress(sender As Object, e As KeyPressEventArgs) Handles txtDelay.KeyPress
+        If Not Char.IsNumber(e.KeyChar) AndAlso Not Char.IsControl(e.KeyChar) Then
+            e.Handled = True
+            Beep()
+        End If
     End Sub
 
     Private Function TakeScreenShot(ByVal Control As Control) As Bitmap

@@ -1,5 +1,5 @@
 ﻿<Global.Microsoft.VisualBasic.CompilerServices.DesignerGenerated()>
-Partial Class Form1
+Partial Class frmMain
     Inherits System.Windows.Forms.Form
 
     'Form overrides dispose to clean up the component list.
@@ -312,7 +312,7 @@ Partial Class Form1
         Me.barProgress.Size = New System.Drawing.Size(361, 23)
         Me.barProgress.TabIndex = 1
         '
-        'Form1
+        'frmMain
         '
         Me.AutoScaleDimensions = New System.Drawing.SizeF(8.0!, 16.0!)
         Me.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font
@@ -325,8 +325,8 @@ Partial Class Form1
         Me.Controls.Add(Me.boxExistingFrames)
         Me.Controls.Add(Me.tabMessageType)
         Me.Controls.Add(Me.GroupBox2)
-        Me.Name = "Form1"
-        Me.Text = "Form1"
+        Me.Name = "frmMain"
+        Me.Text = "Blinky Grid Advanced Programmer"
         Me.tabMessageType.ResumeLayout(False)
         Me.tabPixel.ResumeLayout(False)
         Me.tabPixel.PerformLayout()
