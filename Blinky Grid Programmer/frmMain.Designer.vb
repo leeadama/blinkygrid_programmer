@@ -32,9 +32,8 @@ Partial Class frmMain
         Me.radPixelMarquee = New System.Windows.Forms.RadioButton()
         Me.cmdClearFrame = New System.Windows.Forms.Button()
         Me.cmdAddFrame = New System.Windows.Forms.Button()
-        Me.TabPage2 = New System.Windows.Forms.TabPage()
+        Me.tabText = New System.Windows.Forms.TabPage()
         Me.txtMessage = New System.Windows.Forms.TextBox()
-        Me.panExistingFrames = New System.Windows.Forms.Panel()
         Me.boxExistingFrames = New System.Windows.Forms.GroupBox()
         Me.cmdAddMessage = New System.Windows.Forms.Button()
         Me.grpMessages = New System.Windows.Forms.GroupBox()
@@ -48,9 +47,12 @@ Partial Class frmMain
         Me.Label1 = New System.Windows.Forms.Label()
         Me.txtDelay = New System.Windows.Forms.TextBox()
         Me.barProgress = New System.Windows.Forms.ProgressBar()
+        Me.panExistingFrames = New System.Windows.Forms.FlowLayoutPanel()
+        Me.Label3 = New System.Windows.Forms.Label()
+        Me.cmbEndBehavior = New System.Windows.Forms.ComboBox()
         Me.tabMessageType.SuspendLayout()
         Me.tabPixel.SuspendLayout()
-        Me.TabPage2.SuspendLayout()
+        Me.tabText.SuspendLayout()
         Me.boxExistingFrames.SuspendLayout()
         Me.grpMessages.SuspendLayout()
         Me.GroupBox1.SuspendLayout()
@@ -64,7 +66,7 @@ Partial Class frmMain
         Me.tabMessageType.Anchor = CType(((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Left) _
             Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
         Me.tabMessageType.Controls.Add(Me.tabPixel)
-        Me.tabMessageType.Controls.Add(Me.TabPage2)
+        Me.tabMessageType.Controls.Add(Me.tabText)
         Me.tabMessageType.Location = New System.Drawing.Point(13, 13)
         Me.tabMessageType.Name = "tabMessageType"
         Me.tabMessageType.SelectedIndex = 0
@@ -74,10 +76,6 @@ Partial Class frmMain
         'tabPixel
         '
         Me.tabPixel.Controls.Add(Me.boxPixelFrame)
-        Me.tabPixel.Controls.Add(Me.Label2)
-        Me.tabPixel.Controls.Add(Me.cmbPixelDelay)
-        Me.tabPixel.Controls.Add(Me.radPixelAnimation)
-        Me.tabPixel.Controls.Add(Me.radPixelMarquee)
         Me.tabPixel.Controls.Add(Me.cmdClearFrame)
         Me.tabPixel.Controls.Add(Me.cmdAddFrame)
         Me.tabPixel.Location = New System.Drawing.Point(4, 25)
@@ -101,7 +99,7 @@ Partial Class frmMain
         'Label2
         '
         Me.Label2.AutoSize = True
-        Me.Label2.Location = New System.Drawing.Point(183, 158)
+        Me.Label2.Location = New System.Drawing.Point(555, 120)
         Me.Label2.Name = "Label2"
         Me.Label2.Size = New System.Drawing.Size(44, 17)
         Me.Label2.TabIndex = 5
@@ -114,7 +112,7 @@ Partial Class frmMain
         Me.cmbPixelDelay.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList
         Me.cmbPixelDelay.FormattingEnabled = True
         Me.cmbPixelDelay.Items.AddRange(New Object() {"0", "1", "2", "3", "4", "5", "6", "7", "8", "9", "10", "11", "12", "13", "14", "15"})
-        Me.cmbPixelDelay.Location = New System.Drawing.Point(247, 155)
+        Me.cmbPixelDelay.Location = New System.Drawing.Point(605, 117)
         Me.cmbPixelDelay.MaxDropDownItems = 16
         Me.cmbPixelDelay.Name = "cmbPixelDelay"
         Me.cmbPixelDelay.Size = New System.Drawing.Size(59, 24)
@@ -124,7 +122,7 @@ Partial Class frmMain
         '
         Me.radPixelAnimation.AutoSize = True
         Me.radPixelAnimation.Checked = True
-        Me.radPixelAnimation.Location = New System.Drawing.Point(186, 115)
+        Me.radPixelAnimation.Location = New System.Drawing.Point(558, 90)
         Me.radPixelAnimation.Name = "radPixelAnimation"
         Me.radPixelAnimation.Size = New System.Drawing.Size(91, 21)
         Me.radPixelAnimation.TabIndex = 3
@@ -135,7 +133,7 @@ Partial Class frmMain
         'radPixelMarquee
         '
         Me.radPixelMarquee.AutoSize = True
-        Me.radPixelMarquee.Location = New System.Drawing.Point(186, 88)
+        Me.radPixelMarquee.Location = New System.Drawing.Point(558, 63)
         Me.radPixelMarquee.Name = "radPixelMarquee"
         Me.radPixelMarquee.Size = New System.Drawing.Size(85, 21)
         Me.radPixelMarquee.TabIndex = 2
@@ -160,16 +158,16 @@ Partial Class frmMain
         Me.cmdAddFrame.Text = "Add Frame"
         Me.cmdAddFrame.UseVisualStyleBackColor = True
         '
-        'TabPage2
+        'tabText
         '
-        Me.TabPage2.Controls.Add(Me.txtMessage)
-        Me.TabPage2.Location = New System.Drawing.Point(4, 25)
-        Me.TabPage2.Name = "TabPage2"
-        Me.TabPage2.Padding = New System.Windows.Forms.Padding(3)
-        Me.TabPage2.Size = New System.Drawing.Size(312, 185)
-        Me.TabPage2.TabIndex = 1
-        Me.TabPage2.Text = "Text Message"
-        Me.TabPage2.UseVisualStyleBackColor = True
+        Me.tabText.Controls.Add(Me.txtMessage)
+        Me.tabText.Location = New System.Drawing.Point(4, 25)
+        Me.tabText.Name = "tabText"
+        Me.tabText.Padding = New System.Windows.Forms.Padding(3)
+        Me.tabText.Size = New System.Drawing.Size(312, 185)
+        Me.tabText.TabIndex = 1
+        Me.tabText.Text = "Text Message"
+        Me.tabText.UseVisualStyleBackColor = True
         '
         'txtMessage
         '
@@ -178,26 +176,20 @@ Partial Class frmMain
         Me.txtMessage.Size = New System.Drawing.Size(299, 22)
         Me.txtMessage.TabIndex = 0
         '
-        'panExistingFrames
-        '
-        Me.panExistingFrames.Anchor = CType((((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Bottom) _
-            Or System.Windows.Forms.AnchorStyles.Left) _
-            Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
-        Me.panExistingFrames.AutoScroll = True
-        Me.panExistingFrames.BackColor = System.Drawing.SystemColors.ControlLightLight
-        Me.panExistingFrames.Location = New System.Drawing.Point(6, 21)
-        Me.panExistingFrames.Name = "panExistingFrames"
-        Me.panExistingFrames.Size = New System.Drawing.Size(546, 186)
-        Me.panExistingFrames.TabIndex = 0
-        '
         'boxExistingFrames
         '
         Me.boxExistingFrames.Anchor = CType((((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Bottom) _
             Or System.Windows.Forms.AnchorStyles.Left) _
             Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
+        Me.boxExistingFrames.Controls.Add(Me.cmbEndBehavior)
+        Me.boxExistingFrames.Controls.Add(Me.Label3)
+        Me.boxExistingFrames.Controls.Add(Me.panExistingFrames)
+        Me.boxExistingFrames.Controls.Add(Me.cmbPixelDelay)
+        Me.boxExistingFrames.Controls.Add(Me.Label2)
         Me.boxExistingFrames.Controls.Add(Me.cmdAddMessage)
         Me.boxExistingFrames.Controls.Add(Me.grpMessages)
-        Me.boxExistingFrames.Controls.Add(Me.panExistingFrames)
+        Me.boxExistingFrames.Controls.Add(Me.radPixelAnimation)
+        Me.boxExistingFrames.Controls.Add(Me.radPixelMarquee)
         Me.boxExistingFrames.Location = New System.Drawing.Point(13, 233)
         Me.boxExistingFrames.Name = "boxExistingFrames"
         Me.boxExistingFrames.Size = New System.Drawing.Size(687, 333)
@@ -312,6 +304,37 @@ Partial Class frmMain
         Me.barProgress.Size = New System.Drawing.Size(361, 23)
         Me.barProgress.TabIndex = 1
         '
+        'panExistingFrames
+        '
+        Me.panExistingFrames.Anchor = CType((((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Bottom) _
+            Or System.Windows.Forms.AnchorStyles.Left) _
+            Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
+        Me.panExistingFrames.AutoScroll = True
+        Me.panExistingFrames.BackColor = System.Drawing.SystemColors.ControlLightLight
+        Me.panExistingFrames.Location = New System.Drawing.Point(7, 22)
+        Me.panExistingFrames.Name = "panExistingFrames"
+        Me.panExistingFrames.Size = New System.Drawing.Size(545, 186)
+        Me.panExistingFrames.TabIndex = 3
+        '
+        'Label3
+        '
+        Me.Label3.AutoSize = True
+        Me.Label3.Location = New System.Drawing.Point(555, 151)
+        Me.Label3.Name = "Label3"
+        Me.Label3.Size = New System.Drawing.Size(50, 17)
+        Me.Label3.TabIndex = 6
+        Me.Label3.Text = "At End"
+        '
+        'cmbEndBehavior
+        '
+        Me.cmbEndBehavior.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList
+        Me.cmbEndBehavior.FormattingEnabled = True
+        Me.cmbEndBehavior.Items.AddRange(New Object() {"Stop", "Repeat", "Advance", "Easter Egg"})
+        Me.cmbEndBehavior.Location = New System.Drawing.Point(605, 148)
+        Me.cmbEndBehavior.Name = "cmbEndBehavior"
+        Me.cmbEndBehavior.Size = New System.Drawing.Size(76, 24)
+        Me.cmbEndBehavior.TabIndex = 7
+        '
         'frmMain
         '
         Me.AutoScaleDimensions = New System.Drawing.SizeF(8.0!, 16.0!)
@@ -329,10 +352,10 @@ Partial Class frmMain
         Me.Text = "Blinky Grid Advanced Programmer"
         Me.tabMessageType.ResumeLayout(False)
         Me.tabPixel.ResumeLayout(False)
-        Me.tabPixel.PerformLayout()
-        Me.TabPage2.ResumeLayout(False)
-        Me.TabPage2.PerformLayout()
+        Me.tabText.ResumeLayout(False)
+        Me.tabText.PerformLayout()
         Me.boxExistingFrames.ResumeLayout(False)
+        Me.boxExistingFrames.PerformLayout()
         Me.grpMessages.ResumeLayout(False)
         Me.GroupBox1.ResumeLayout(False)
         CType(Me.picClock, System.ComponentModel.ISupportInitialize).EndInit()
@@ -344,8 +367,7 @@ Partial Class frmMain
     End Sub
     Friend WithEvents tabMessageType As TabControl
     Friend WithEvents tabPixel As TabPage
-    Friend WithEvents panExistingFrames As Panel
-    Friend WithEvents TabPage2 As TabPage
+    Friend WithEvents tabText As TabPage
     Friend WithEvents boxExistingFrames As GroupBox
     Friend WithEvents cmdClearFrame As Button
     Friend WithEvents cmdAddFrame As Button
@@ -367,4 +389,7 @@ Partial Class frmMain
     Friend WithEvents Label2 As Label
     Friend WithEvents boxPixelFrame As GroupBox
     Friend WithEvents cmdAddMessage As Button
+    Friend WithEvents panExistingFrames As FlowLayoutPanel
+    Friend WithEvents cmbEndBehavior As ComboBox
+    Friend WithEvents Label3 As Label
 End Class
