@@ -28,7 +28,7 @@ Public Class frmMain
         Dim lastTop, i As Integer
         'Test only.  Remove from working system
         ''MessageInBits = "000011100000000000000000000001100000000100011110000010110001000100001110000101010001010100011000001010010010000000011000000110110001010100001101110000110000000000000000000000000000000111111111"
-        MessageInBits = "0001000000000000000000000000011000000001110001100011000100000000000000000000000000011000000000000000000000000000000000000000000000111100001001000011110000000000001111100001000000000000000100000000011000000000000000000111111001000010010000100100001001111110000000001111111110000001100000011000000110000001100000011111111100000000100101010001000000000000001000000000011001111110010000100100001001000010011111100000000000000000000000000011110000100100001111000000000000000000000000000000000000000000011011000000010000000000001100000000011000011000000000000000000000000000101011100000000000000000000000000000000111111111"
+        'MessageInBits = "0001000000000000000000000000011000000001110001100011000100000000000000000000000000011000000000000000000000000000000000000000000000111100001001000011110000000000001111100001000000000000000100000000011000000000000000000111111001000010010000100100001001111110000000001111111110000001100000011000000110000001100000011111111100000000100101010001000000000000001000000000011001111110010000100100001001000010011111100000000000000000000000000011110000100100001111000000000000000000000000000000000000000000011011000000010000000000001100000000011000011000000000000000000000000000101011100000000000000000000000000000000111111111"
         'MessageInBits = "0000010000000000000000000000011000000001000111100000000100010001110001010000000000000000000000000000000111111111"
         '**************************************
 
@@ -152,10 +152,18 @@ Public Class frmMain
     End Sub
 
     Private Sub cmdTransmit_Click(sender As Object, e As EventArgs) Handles cmdTransmit.Click
+        'GetDataReady
+        messageData.Insert(0, MessageCounter)
+        Dim DataToTransmit As List(Of Integer)
+        DataToTransmit = AddWrapper(messageData)
+        MessageInBits = ConvertToBinary(DataToTransmit)
+
         'setup stuff
         barProgress.Maximum = Len(MessageInBits) + 1
         barProgress.Value = 1
         bitCounter = 0
+
+        'Send the Data
         tmrTransmitData.Enabled = True
 
     End Sub
@@ -175,16 +183,12 @@ Public Class frmMain
         panExistingFrames.Controls.Add(P)
 
         'Save Actual Frame Data for later transmission.
-        columnCount = columnCount + 1
-        For Each ColumnValue As Integer In columnData
-            messageData.Add(ColumnValue)
-        Next
+        columnCount = columnCount + 7
+        'For Each ColumnValue As Integer In columnData
+        'messageData.Add(ColumnValue)
+        'Next
         boxExistingFrames.Text = "Existing Frames (" + columnCount.ToString + ")"
 
-
-    End Sub
-
-    Private Sub frmMain_HandleDestroyed(sender As Object, e As EventArgs) Handles Me.HandleDestroyed
 
     End Sub
 
@@ -205,12 +209,11 @@ Public Class frmMain
 
     Private Function ConvertToBinary(Input As List(Of Integer))
         'Convert the Input bytes one at a time to binary and return as as string for flashing.
-        Dim BinaryDataOut As String
-        BinaryDataOut = ""
+        Dim BinaryDataOut As String = ""
 
-
-
-
+        For Each I In Input
+            BinaryDataOut = BinaryDataOut + Convert.ToString(I, 2).PadLeft(8, "0")
+        Next
 
         Return BinaryDataOut
     End Function
@@ -218,10 +221,35 @@ Public Class frmMain
     Private Function AddWrapper(Input As List(Of Integer))
         'Calculate the proper values and add the wrapper to the beginning and end of the data to transmit.
         Dim DataPackage As New List(Of Integer)
+        DataPackage.Add(Input.Count)
+        DataPackage.Add(0)
+        DataPackage.Add(0)
+        DataPackage.Add(6)
+        For Each I As Integer In Input
+            DataPackage.Add(I)
+        Next
 
+        'checksum
+        Dim HexData, Checksum, DecData As String
+        HexData = ""
+        DecData = ""
 
+        For Each I In messageData
+            If Len(DecData) > 0 Then DecData = DecData + ","
+            DecData = DecData + I.ToString
 
+            If Len(HexData) > 0 Then HexData = HexData + ","
+            HexData = HexData + I.ToString("X2")
+        Next
 
+        Checksum = IntelHexCSum(Input.Count.ToString("X2") + "000006" + HexData.Replace(",", ""))
+        DataPackage.Add(Checksum)
+        'End bytes
+        DataPackage.Add(0)
+        DataPackage.Add(0)
+        DataPackage.Add(0)
+        DataPackage.Add(1)
+        DataPackage.Add(255)
 
         Return DataPackage
     End Function
@@ -252,10 +280,6 @@ Public Class frmMain
 
         Return Output
     End Function
-
-    Private Sub radPixelAnimation_CheckedChanged(sender As Object, e As EventArgs) Handles radPixelAnimation.CheckedChanged
-
-    End Sub
 
     Private Sub cmdAddMessage_Click(sender As Object, e As EventArgs) Handles cmdAddMessage.Click
         'Calculate Message Options.
@@ -293,23 +317,43 @@ Public Class frmMain
         grpMessages.Text = "Messages To Transmit (" + MessageCounter.ToString + ")"
 
         Dim B As New Button
-        B.Width = 20
-        B.Height = 20
+        B.Width = 50
+        B.Height = 50
         If tabMessageType.SelectedIndex = 0 Then
             B.Text = "P"
         Else
             B.Text = "T"
 
         End If
-        grpMessages.Controls.Add(B)
+        panMessagesToTransmit.Controls.Add(B)
 
         'Clear column Data & other Variables
         columnData.Clear()
         columnCount = 0
         boxExistingFrames.Text = "Existing Frames (" + columnCount.ToString + ")"
-        boxExistingFrames.Controls.Clear()
+        panExistingFrames.Controls.Clear()
         MessageOptions = 0
 
 
     End Sub
+
+    Function IntelHexCSum(ByVal InHEX As String) As Byte
+        Dim bytes As New List(Of Byte)
+        Dim csum As Integer = 0
+        For i = 0 To InHEX.Length - 1 Step 2
+            Dim T As String = ""
+            T = InHEX.Substring(i, 2)
+            bytes.Add(CByte("&H" & T))
+        Next
+        For Each b As Byte In bytes
+            csum += b
+        Next
+        csum = csum And 255
+        csum = csum Xor 255
+        csum = csum + 1
+        csum = csum Mod 256
+        Return CByte(csum)
+    End Function
+
+
 End Class

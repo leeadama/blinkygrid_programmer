@@ -26,15 +26,18 @@ Partial Class frmMain
         Me.tabMessageType = New System.Windows.Forms.TabControl()
         Me.tabPixel = New System.Windows.Forms.TabPage()
         Me.boxPixelFrame = New System.Windows.Forms.GroupBox()
-        Me.Label2 = New System.Windows.Forms.Label()
-        Me.cmbPixelDelay = New System.Windows.Forms.ComboBox()
-        Me.radPixelAnimation = New System.Windows.Forms.RadioButton()
-        Me.radPixelMarquee = New System.Windows.Forms.RadioButton()
         Me.cmdClearFrame = New System.Windows.Forms.Button()
         Me.cmdAddFrame = New System.Windows.Forms.Button()
         Me.tabText = New System.Windows.Forms.TabPage()
         Me.txtMessage = New System.Windows.Forms.TextBox()
+        Me.Label2 = New System.Windows.Forms.Label()
+        Me.cmbPixelDelay = New System.Windows.Forms.ComboBox()
+        Me.radPixelAnimation = New System.Windows.Forms.RadioButton()
+        Me.radPixelMarquee = New System.Windows.Forms.RadioButton()
         Me.boxExistingFrames = New System.Windows.Forms.GroupBox()
+        Me.cmbEndBehavior = New System.Windows.Forms.ComboBox()
+        Me.Label3 = New System.Windows.Forms.Label()
+        Me.panExistingFrames = New System.Windows.Forms.FlowLayoutPanel()
         Me.cmdAddMessage = New System.Windows.Forms.Button()
         Me.grpMessages = New System.Windows.Forms.GroupBox()
         Me.panMessagesToTransmit = New System.Windows.Forms.FlowLayoutPanel()
@@ -47,9 +50,6 @@ Partial Class frmMain
         Me.Label1 = New System.Windows.Forms.Label()
         Me.txtDelay = New System.Windows.Forms.TextBox()
         Me.barProgress = New System.Windows.Forms.ProgressBar()
-        Me.panExistingFrames = New System.Windows.Forms.FlowLayoutPanel()
-        Me.Label3 = New System.Windows.Forms.Label()
-        Me.cmbEndBehavior = New System.Windows.Forms.ComboBox()
         Me.tabMessageType.SuspendLayout()
         Me.tabPixel.SuspendLayout()
         Me.tabText.SuspendLayout()
@@ -96,6 +96,42 @@ Partial Class frmMain
         Me.boxPixelFrame.TabIndex = 6
         Me.boxPixelFrame.TabStop = False
         '
+        'cmdClearFrame
+        '
+        Me.cmdClearFrame.Location = New System.Drawing.Point(186, 42)
+        Me.cmdClearFrame.Name = "cmdClearFrame"
+        Me.cmdClearFrame.Size = New System.Drawing.Size(102, 23)
+        Me.cmdClearFrame.TabIndex = 1
+        Me.cmdClearFrame.Text = "Clear Frame"
+        Me.cmdClearFrame.UseVisualStyleBackColor = True
+        '
+        'cmdAddFrame
+        '
+        Me.cmdAddFrame.Location = New System.Drawing.Point(186, 12)
+        Me.cmdAddFrame.Name = "cmdAddFrame"
+        Me.cmdAddFrame.Size = New System.Drawing.Size(102, 23)
+        Me.cmdAddFrame.TabIndex = 0
+        Me.cmdAddFrame.Text = "Add Frame"
+        Me.cmdAddFrame.UseVisualStyleBackColor = True
+        '
+        'tabText
+        '
+        Me.tabText.Controls.Add(Me.txtMessage)
+        Me.tabText.Location = New System.Drawing.Point(4, 25)
+        Me.tabText.Name = "tabText"
+        Me.tabText.Padding = New System.Windows.Forms.Padding(3)
+        Me.tabText.Size = New System.Drawing.Size(312, 185)
+        Me.tabText.TabIndex = 1
+        Me.tabText.Text = "Text Message"
+        Me.tabText.UseVisualStyleBackColor = True
+        '
+        'txtMessage
+        '
+        Me.txtMessage.Location = New System.Drawing.Point(7, 7)
+        Me.txtMessage.Name = "txtMessage"
+        Me.txtMessage.Size = New System.Drawing.Size(299, 22)
+        Me.txtMessage.TabIndex = 0
+        '
         'Label2
         '
         Me.Label2.AutoSize = True
@@ -140,42 +176,6 @@ Partial Class frmMain
         Me.radPixelMarquee.Text = "Marquee"
         Me.radPixelMarquee.UseVisualStyleBackColor = True
         '
-        'cmdClearFrame
-        '
-        Me.cmdClearFrame.Location = New System.Drawing.Point(186, 42)
-        Me.cmdClearFrame.Name = "cmdClearFrame"
-        Me.cmdClearFrame.Size = New System.Drawing.Size(102, 23)
-        Me.cmdClearFrame.TabIndex = 1
-        Me.cmdClearFrame.Text = "Clear Frame"
-        Me.cmdClearFrame.UseVisualStyleBackColor = True
-        '
-        'cmdAddFrame
-        '
-        Me.cmdAddFrame.Location = New System.Drawing.Point(186, 12)
-        Me.cmdAddFrame.Name = "cmdAddFrame"
-        Me.cmdAddFrame.Size = New System.Drawing.Size(102, 23)
-        Me.cmdAddFrame.TabIndex = 0
-        Me.cmdAddFrame.Text = "Add Frame"
-        Me.cmdAddFrame.UseVisualStyleBackColor = True
-        '
-        'tabText
-        '
-        Me.tabText.Controls.Add(Me.txtMessage)
-        Me.tabText.Location = New System.Drawing.Point(4, 25)
-        Me.tabText.Name = "tabText"
-        Me.tabText.Padding = New System.Windows.Forms.Padding(3)
-        Me.tabText.Size = New System.Drawing.Size(312, 185)
-        Me.tabText.TabIndex = 1
-        Me.tabText.Text = "Text Message"
-        Me.tabText.UseVisualStyleBackColor = True
-        '
-        'txtMessage
-        '
-        Me.txtMessage.Location = New System.Drawing.Point(7, 7)
-        Me.txtMessage.Name = "txtMessage"
-        Me.txtMessage.Size = New System.Drawing.Size(299, 22)
-        Me.txtMessage.TabIndex = 0
-        '
         'boxExistingFrames
         '
         Me.boxExistingFrames.Anchor = CType((((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Bottom) _
@@ -187,15 +187,45 @@ Partial Class frmMain
         Me.boxExistingFrames.Controls.Add(Me.cmbPixelDelay)
         Me.boxExistingFrames.Controls.Add(Me.Label2)
         Me.boxExistingFrames.Controls.Add(Me.cmdAddMessage)
-        Me.boxExistingFrames.Controls.Add(Me.grpMessages)
         Me.boxExistingFrames.Controls.Add(Me.radPixelAnimation)
         Me.boxExistingFrames.Controls.Add(Me.radPixelMarquee)
         Me.boxExistingFrames.Location = New System.Drawing.Point(13, 233)
         Me.boxExistingFrames.Name = "boxExistingFrames"
-        Me.boxExistingFrames.Size = New System.Drawing.Size(687, 333)
+        Me.boxExistingFrames.Size = New System.Drawing.Size(687, 182)
         Me.boxExistingFrames.TabIndex = 2
         Me.boxExistingFrames.TabStop = False
         Me.boxExistingFrames.Text = "Existing Frames (0)"
+        '
+        'cmbEndBehavior
+        '
+        Me.cmbEndBehavior.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList
+        Me.cmbEndBehavior.FormattingEnabled = True
+        Me.cmbEndBehavior.Items.AddRange(New Object() {"Stop", "Repeat", "Advance", "Easter Egg"})
+        Me.cmbEndBehavior.Location = New System.Drawing.Point(605, 148)
+        Me.cmbEndBehavior.Name = "cmbEndBehavior"
+        Me.cmbEndBehavior.Size = New System.Drawing.Size(76, 24)
+        Me.cmbEndBehavior.TabIndex = 7
+        '
+        'Label3
+        '
+        Me.Label3.AutoSize = True
+        Me.Label3.Location = New System.Drawing.Point(555, 151)
+        Me.Label3.Name = "Label3"
+        Me.Label3.Size = New System.Drawing.Size(50, 17)
+        Me.Label3.TabIndex = 6
+        Me.Label3.Text = "At End"
+        '
+        'panExistingFrames
+        '
+        Me.panExistingFrames.Anchor = CType((((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Bottom) _
+            Or System.Windows.Forms.AnchorStyles.Left) _
+            Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
+        Me.panExistingFrames.AutoScroll = True
+        Me.panExistingFrames.BackColor = System.Drawing.SystemColors.ControlLightLight
+        Me.panExistingFrames.Location = New System.Drawing.Point(7, 22)
+        Me.panExistingFrames.Name = "panExistingFrames"
+        Me.panExistingFrames.Size = New System.Drawing.Size(545, 154)
+        Me.panExistingFrames.TabIndex = 3
         '
         'cmdAddMessage
         '
@@ -211,9 +241,9 @@ Partial Class frmMain
         Me.grpMessages.Anchor = CType(((System.Windows.Forms.AnchorStyles.Bottom Or System.Windows.Forms.AnchorStyles.Left) _
             Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
         Me.grpMessages.Controls.Add(Me.panMessagesToTransmit)
-        Me.grpMessages.Location = New System.Drawing.Point(0, 214)
+        Me.grpMessages.Location = New System.Drawing.Point(12, 421)
         Me.grpMessages.Name = "grpMessages"
-        Me.grpMessages.Size = New System.Drawing.Size(681, 113)
+        Me.grpMessages.Size = New System.Drawing.Size(681, 117)
         Me.grpMessages.TabIndex = 1
         Me.grpMessages.TabStop = False
         Me.grpMessages.Text = "Messages To Transmit (0)"
@@ -304,47 +334,17 @@ Partial Class frmMain
         Me.barProgress.Size = New System.Drawing.Size(361, 23)
         Me.barProgress.TabIndex = 1
         '
-        'panExistingFrames
-        '
-        Me.panExistingFrames.Anchor = CType((((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Bottom) _
-            Or System.Windows.Forms.AnchorStyles.Left) _
-            Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
-        Me.panExistingFrames.AutoScroll = True
-        Me.panExistingFrames.BackColor = System.Drawing.SystemColors.ControlLightLight
-        Me.panExistingFrames.Location = New System.Drawing.Point(7, 22)
-        Me.panExistingFrames.Name = "panExistingFrames"
-        Me.panExistingFrames.Size = New System.Drawing.Size(545, 186)
-        Me.panExistingFrames.TabIndex = 3
-        '
-        'Label3
-        '
-        Me.Label3.AutoSize = True
-        Me.Label3.Location = New System.Drawing.Point(555, 151)
-        Me.Label3.Name = "Label3"
-        Me.Label3.Size = New System.Drawing.Size(50, 17)
-        Me.Label3.TabIndex = 6
-        Me.Label3.Text = "At End"
-        '
-        'cmbEndBehavior
-        '
-        Me.cmbEndBehavior.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList
-        Me.cmbEndBehavior.FormattingEnabled = True
-        Me.cmbEndBehavior.Items.AddRange(New Object() {"Stop", "Repeat", "Advance", "Easter Egg"})
-        Me.cmbEndBehavior.Location = New System.Drawing.Point(605, 148)
-        Me.cmbEndBehavior.Name = "cmbEndBehavior"
-        Me.cmbEndBehavior.Size = New System.Drawing.Size(76, 24)
-        Me.cmbEndBehavior.TabIndex = 7
-        '
         'frmMain
         '
         Me.AutoScaleDimensions = New System.Drawing.SizeF(8.0!, 16.0!)
         Me.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font
-        Me.ClientSize = New System.Drawing.Size(712, 578)
+        Me.ClientSize = New System.Drawing.Size(712, 550)
         Me.Controls.Add(Me.barProgress)
         Me.Controls.Add(Me.txtDelay)
         Me.Controls.Add(Me.Label1)
         Me.Controls.Add(Me.cmdTransmit)
         Me.Controls.Add(Me.GroupBox1)
+        Me.Controls.Add(Me.grpMessages)
         Me.Controls.Add(Me.boxExistingFrames)
         Me.Controls.Add(Me.tabMessageType)
         Me.Controls.Add(Me.GroupBox2)
