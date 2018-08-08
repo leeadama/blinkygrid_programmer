@@ -18,6 +18,7 @@ Public Class frmMain
     Dim messageData As New List(Of Integer)
     Dim TransmitData As New List(Of Integer)
     Dim MessageInBits As String
+    Dim MessageInBytes As String
     Dim bitCounter As Integer
     Dim MessageOptions As Integer
     Dim MessageCounter As Integer
@@ -113,6 +114,10 @@ Public Class frmMain
             End If
             picClock.Refresh()
             barProgress.Value = barProgress.Value + 1
+            Dim Progress, Total As Integer
+            Progress = bitCounter
+            Total = Len(MessageInBits)
+            labProgress.Text = Progress.ToString + " / " + Total.ToString
             Threading.Thread.Sleep(tmrTransmitData.Interval)
 
         Else
@@ -152,19 +157,65 @@ Public Class frmMain
     End Sub
 
     Private Sub cmdTransmit_Click(sender As Object, e As EventArgs) Handles cmdTransmit.Click
-        'GetDataReady
-        messageData.Insert(0, MessageCounter)
-        Dim DataToTransmit As List(Of Integer)
-        DataToTransmit = AddWrapper(messageData)
-        MessageInBits = ConvertToBinary(DataToTransmit)
+        'Retransmission ?
+        If Len(MessageInBits) > 0 Then
+            'setup stuff
+            barProgress.Maximum = Len(MessageInBits) + 1
+            barProgress.Value = 1
+            bitCounter = 0
 
-        'setup stuff
-        barProgress.Maximum = Len(MessageInBits) + 1
-        barProgress.Value = 1
-        bitCounter = 0
+            'Send the Data
+            tmrTransmitData.Enabled = True
+        Else
+            'GetDataReady
+            MessageInBits = ""
+            messageData.Insert(0, MessageCounter)
+            Dim Blocks As Double
+            Dim BytesCurrent, BytesTotal As New Integer
+            Blocks = (messageData.Count + 1) / 16
+            Blocks = Math.Ceiling(Blocks)
+            Dim TransmitBlock As New List(Of Integer)
 
-        'Send the Data
-        tmrTransmitData.Enabled = True
+            For i = 0 To Blocks - 1
+                'messageData.Insert(BytesTotal, MessageCounter - i)
+                Dim x As Integer = i * 16
+                Dim y As Integer = messageData.Count - (x)
+                If y > 16 Then y = (16)
+                y = y + x
+                BytesCurrent = y - x
+
+
+                For j = x To (y - 1)
+                    TransmitBlock.Add(messageData(j))
+                Next
+
+                TransmitBlock = AddWrapper(TransmitBlock, BytesTotal, BytesCurrent)
+
+                For Each Byt In TransmitBlock
+                    TransmitData.Add(Byt)
+                Next
+
+                BytesTotal = BytesTotal + BytesCurrent
+                TransmitBlock.Clear()
+            Next
+
+            TransmitData = AddEndBytes(TransmitData)
+            MessageInBits = MessageInBits + ConvertToBinary(TransmitData)
+
+            For Each I In TransmitData
+                If Len(MessageInBytes) > 0 Then MessageInBytes = MessageInBytes + ","
+                MessageInBytes = MessageInBytes + I.ToString
+            Next
+
+
+            'setup stuff
+            barProgress.Maximum = Len(MessageInBits) + 1
+            barProgress.Value = 1
+            bitCounter = 0
+
+            'Send the Data
+            tmrTransmitData.Enabled = True
+        End If
 
     End Sub
 
@@ -176,19 +227,18 @@ Public Class frmMain
         Dim bmpPixelFrame As Bitmap
         bmpPixelFrame = TakeScreenShot(boxPixelFrame)
         Dim P As New PictureBox
-        P.Height = bmpPixelFrame.Height
-        P.Width = bmpPixelFrame.Width
-        'P.SizeMode = P.SizeMode.StretchImage
+        P.Height = bmpPixelFrame.Height * 0.7
+        P.Width = bmpPixelFrame.Width * 0.7
+        P.SizeMode = P.SizeMode.StretchImage
         P.Image = bmpPixelFrame
         panExistingFrames.Controls.Add(P)
 
         'Save Actual Frame Data for later transmission.
         columnCount = columnCount + 7
-        'For Each ColumnValue As Integer In columnData
-        'messageData.Add(ColumnValue)
-        'Next
-        boxExistingFrames.Text = "Existing Frames (" + columnCount.ToString + ")"
-
+        For Each ColumnValue As Integer In columnData
+            messageData.Add(ColumnValue)
+        Next
+        boxExistingFrames.Text = "Existing Frames (" + (columnCount / 7).ToString + ")"
 
     End Sub
 
@@ -218,12 +268,17 @@ Public Class frmMain
         Return BinaryDataOut
     End Function
 
-    Private Function AddWrapper(Input As List(Of Integer))
+    Private Function AddWrapper(Input As List(Of Integer), BytesTotal As Integer, BytesCurrent As Integer)
         'Calculate the proper values and add the wrapper to the beginning and end of the data to transmit.
         Dim DataPackage As New List(Of Integer)
-        DataPackage.Add(Input.Count)
+
+
+
+
+
+        DataPackage.Add(BytesCurrent)
         DataPackage.Add(0)
-        DataPackage.Add(0)
+        DataPackage.Add(BytesTotal)
         DataPackage.Add(6)
         For Each I As Integer In Input
             DataPackage.Add(I)
@@ -234,7 +289,7 @@ Public Class frmMain
         HexData = ""
         DecData = ""
 
-        For Each I In messageData
+        For Each I In DataPackage
             If Len(DecData) > 0 Then DecData = DecData + ","
             DecData = DecData + I.ToString
 
@@ -242,15 +297,22 @@ Public Class frmMain
             HexData = HexData + I.ToString("X2")
         Next
 
-        Checksum = IntelHexCSum(Input.Count.ToString("X2") + "000006" + HexData.Replace(",", ""))
+        'Checksum = IntelHexCSum(Input.Count.ToString("X2") + "000006" + HexData.Replace(",", ""))
+        Checksum = IntelHexCSum(HexData.Replace(",", ""))
         DataPackage.Add(Checksum)
+
+        'AddEndBytes(DataPackage)
+
+        Return DataPackage
+    End Function
+
+    Private Function AddEndBytes(DataPackage As List(Of Integer))
         'End bytes
         DataPackage.Add(0)
         DataPackage.Add(0)
         DataPackage.Add(0)
         DataPackage.Add(1)
         DataPackage.Add(255)
-
         Return DataPackage
     End Function
 
@@ -306,11 +368,11 @@ Public Class frmMain
         MessageOptions = MessageOptions + cmbEndBehavior.SelectedIndex
 
         'Add Message to MessageData
-        messageData.Add(MessageOptions)
-        messageData.Add(columnCount)
-        For Each Input As Integer In columnData
-            messageData.Add(Input)
-        Next
+        messageData.Insert(0, MessageOptions)
+        messageData.Insert(1, columnCount)
+        'For Each Input As Integer In columnData
+        'messageData.Add(Input)
+        'Next
 
         'Update MessageCounter and UI Display
         MessageCounter = MessageCounter + 1
@@ -329,12 +391,16 @@ Public Class frmMain
 
         'Clear column Data & other Variables
         columnData.Clear()
+        Dim Temp(6) As Integer
+        columnData.AddRange(Temp)
         columnCount = 0
-        boxExistingFrames.Text = "Existing Frames (" + columnCount.ToString + ")"
+        boxExistingFrames.Text = "Existing Frames (0)"
         panExistingFrames.Controls.Clear()
         MessageOptions = 0
-
-
+        For Each i In Buttons.Values
+            i.BackColor = Color.Black
+        Next
+        cmdTransmit.Enabled = True
     End Sub
 
     Function IntelHexCSum(ByVal InHEX As String) As Byte
@@ -355,5 +421,14 @@ Public Class frmMain
         Return CByte(csum)
     End Function
 
-
+    Private Sub cmdClearFrame_Click(sender As Object, e As EventArgs) Handles cmdClearFrame.Click
+        'Clear column Data & other Variables
+        columnData.Clear()
+        Dim Temp(6) As Integer
+        columnData.AddRange(Temp)
+        'columnCount = 0
+        For Each i In Buttons.Values
+            i.BackColor = Color.Black
+        Next
+    End Sub
 End Class

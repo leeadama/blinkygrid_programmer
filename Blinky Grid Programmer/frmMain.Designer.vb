@@ -50,6 +50,7 @@ Partial Class frmMain
         Me.Label1 = New System.Windows.Forms.Label()
         Me.txtDelay = New System.Windows.Forms.TextBox()
         Me.barProgress = New System.Windows.Forms.ProgressBar()
+        Me.labProgress = New System.Windows.Forms.Label()
         Me.tabMessageType.SuspendLayout()
         Me.tabPixel.SuspendLayout()
         Me.tabText.SuspendLayout()
@@ -191,7 +192,7 @@ Partial Class frmMain
         Me.boxExistingFrames.Controls.Add(Me.radPixelMarquee)
         Me.boxExistingFrames.Location = New System.Drawing.Point(13, 233)
         Me.boxExistingFrames.Name = "boxExistingFrames"
-        Me.boxExistingFrames.Size = New System.Drawing.Size(687, 182)
+        Me.boxExistingFrames.Size = New System.Drawing.Size(687, 179)
         Me.boxExistingFrames.TabIndex = 2
         Me.boxExistingFrames.TabStop = False
         Me.boxExistingFrames.Text = "Existing Frames (0)"
@@ -224,7 +225,7 @@ Partial Class frmMain
         Me.panExistingFrames.BackColor = System.Drawing.SystemColors.ControlLightLight
         Me.panExistingFrames.Location = New System.Drawing.Point(7, 22)
         Me.panExistingFrames.Name = "panExistingFrames"
-        Me.panExistingFrames.Size = New System.Drawing.Size(545, 154)
+        Me.panExistingFrames.Size = New System.Drawing.Size(545, 151)
         Me.panExistingFrames.TabIndex = 3
         '
         'cmdAddMessage
@@ -241,7 +242,7 @@ Partial Class frmMain
         Me.grpMessages.Anchor = CType(((System.Windows.Forms.AnchorStyles.Bottom Or System.Windows.Forms.AnchorStyles.Left) _
             Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
         Me.grpMessages.Controls.Add(Me.panMessagesToTransmit)
-        Me.grpMessages.Location = New System.Drawing.Point(12, 421)
+        Me.grpMessages.Location = New System.Drawing.Point(12, 418)
         Me.grpMessages.Name = "grpMessages"
         Me.grpMessages.Size = New System.Drawing.Size(681, 117)
         Me.grpMessages.TabIndex = 1
@@ -278,6 +279,7 @@ Partial Class frmMain
         '
         'GroupBox2
         '
+        Me.GroupBox2.Controls.Add(Me.labProgress)
         Me.GroupBox2.Controls.Add(Me.picData)
         Me.GroupBox2.Location = New System.Drawing.Point(513, 50)
         Me.GroupBox2.Name = "GroupBox2"
@@ -301,6 +303,7 @@ Partial Class frmMain
         '
         'cmdTransmit
         '
+        Me.cmdTransmit.Enabled = False
         Me.cmdTransmit.Location = New System.Drawing.Point(513, 21)
         Me.cmdTransmit.Name = "cmdTransmit"
         Me.cmdTransmit.Size = New System.Drawing.Size(181, 23)
@@ -333,12 +336,22 @@ Partial Class frmMain
         Me.barProgress.Name = "barProgress"
         Me.barProgress.Size = New System.Drawing.Size(361, 23)
         Me.barProgress.TabIndex = 1
+        Me.barProgress.Tag = ""
+        '
+        'labProgress
+        '
+        Me.labProgress.BackColor = System.Drawing.Color.Transparent
+        Me.labProgress.Location = New System.Drawing.Point(46, 0)
+        Me.labProgress.Name = "labProgress"
+        Me.labProgress.Size = New System.Drawing.Size(134, 19)
+        Me.labProgress.TabIndex = 8
+        Me.labProgress.TextAlign = System.Drawing.ContentAlignment.MiddleCenter
         '
         'frmMain
         '
         Me.AutoScaleDimensions = New System.Drawing.SizeF(8.0!, 16.0!)
         Me.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font
-        Me.ClientSize = New System.Drawing.Size(712, 550)
+        Me.ClientSize = New System.Drawing.Size(712, 547)
         Me.Controls.Add(Me.barProgress)
         Me.Controls.Add(Me.txtDelay)
         Me.Controls.Add(Me.Label1)
@@ -392,4 +405,5 @@ Partial Class frmMain
     Friend WithEvents panExistingFrames As FlowLayoutPanel
     Friend WithEvents cmbEndBehavior As ComboBox
     Friend WithEvents Label3 As Label
+    Friend WithEvents labProgress As Label
 End Class
